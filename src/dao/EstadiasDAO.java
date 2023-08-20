@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,14 +25,14 @@ public class EstadiasDAO {
 			String sql = "INSERT INTO estadias (fecha_entrada, fecha_salida, marca, modelo, dominio, titular, telefono, lugar_asignado)"
 					+"VALUES(?, ?, ?, ?, ?, ?)";
 			try(PreparedStatement pstm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-				pstm.set (7, reserva.getDataE());
-				pstm.setObject(8, reserva.getDataS());
-				pstm.setObject(1, estadias.getMarca());
-				pstm.setString(2, estadias.getModelo());
-				pstm.setString(3, estadias.getDominio());
-				pstm.setString(4, estadias.getTitular());
-				pstm.setString(5, estadias.getTelefono());
-				pstm.setInt(6, estadias.getLugarAsignado());
+				pstm.setDate(1, Date.valueOf(reserva.getDataE()));
+				pstm.setDate(2, Date.valueOf(reserva.getDataS()));
+				pstm.setObject(3, estadias.getMarca());
+				pstm.setString(4, estadias.getModelo());
+				pstm.setString(5, estadias.getDominio());
+				pstm.setString(6, estadias.getTitular());
+				pstm.setString(7, estadias.getTelefono());
+				pstm.setInt(8, estadias.getLugarAsignado());
 				
 				pstm.execute();
 				

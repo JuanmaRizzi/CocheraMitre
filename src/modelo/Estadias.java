@@ -5,8 +5,8 @@ import java.sql.Date;
 public class Estadias {
 
 		private Integer id;
-		private Date DateE;
-		private Date DateS;
+		private Date dataE;
+		private Date dataS;
 		private Object marca;
 		private String modelo;
 		private String dominio;
@@ -20,11 +20,11 @@ public class Estadias {
 
 		
 
-		public Estadias(Date dateE, Date dateS, Object marca, String modelo, String dominio, String titular,
+		public Estadias(Date dataE, Date dataS, Object marca, String modelo, String dominio, String titular,
 				String telefono, Integer lugarAsignado) {
 		
-			DateE = dateE;
-			DateS = dateS;
+			this.dataE = dataE;
+			this.dataS = dataS;
 			this.marca = marca;
 			this.modelo = modelo;
 			this.dominio = dominio;
@@ -44,25 +44,25 @@ public class Estadias {
 		
 
 		public Date getDateE() {
-			return DateE;
+			return dataE;
 		}
 
 
 
 		public void setDateE(Date dateE) {
-			DateE = dateE;
+			this.dataE = dateE;
 		}
 
 
 
 		public Date getDateS() {
-			return DateS;
+			return dataS;
 		}
 
 
 
 		public void setDateS(Date dateS) {
-			DateS = dateS;
+			this.dataS = dateS;
 		}
 
 
