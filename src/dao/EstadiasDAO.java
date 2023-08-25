@@ -13,7 +13,7 @@ import modelo.Reserva;
 public class EstadiasDAO {
 
 	private Connection con;
-	private Reserva reserva;
+	
 	
 	public EstadiasDAO(Connection con) {
 		this.con = con;
@@ -22,17 +22,18 @@ public class EstadiasDAO {
 	public void guardar(Estadias estadias) {
 		
 		try {
-			String sql = "INSERT INTO estadias (fecha_entrada, fecha_salida, marca, modelo, dominio, titular, telefono, lugar_asignado)"
-					+"VALUES(?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO estadias (fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor )"
+					+"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			try(PreparedStatement pstm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-				pstm.setDate(1, Date.valueOf(reserva.getDataE()));
-				pstm.setDate(2, Date.valueOf(reserva.getDataS()));
+				pstm.setObject(1, estadias.getDataE());
+				pstm.setInt(2, estadias.getLugarAsignado());
 				pstm.setObject(3, estadias.getMarca());
 				pstm.setString(4, estadias.getModelo());
 				pstm.setString(5, estadias.getDominio());
 				pstm.setString(6, estadias.getTitular());
 				pstm.setString(7, estadias.getTelefono());
-				pstm.setInt(8, estadias.getLugarAsignado());
+				pstm.setInt(8, estadias.getDias());
+				pstm.setString(9, estadias.getValor());
 				
 				pstm.execute();
 				
