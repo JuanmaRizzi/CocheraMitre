@@ -297,7 +297,7 @@ public class RegistroEstadia extends JFrame {
 		txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		contentPane.add(txtValor);
 		
-		txtValor.addPropertyChangeListener(new PropertyChangeListener() {
+		txtDias.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 			calcularValor();
 			}
