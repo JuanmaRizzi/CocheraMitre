@@ -56,6 +56,8 @@ public class RegistroEstadia extends JFrame {
 	
 	private EstadiasControlador estadiasControl;
 	
+	
+	
 
 	/**
 	 * Launch the application.
@@ -287,21 +289,24 @@ public class RegistroEstadia extends JFrame {
 		txtDias.setBackground(Color.WHITE);
 		txtDias.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		contentPane.add(txtDias);
+	
+		txtDias.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+			calcularValor(txtDias);
+			}
+		});
 		
 		txtValor = new JTextField();
 		txtValor.setFont(new Font("Roboto", Font.PLAIN, 13));
 		txtValor.setBounds(560, 524, 285, 33);
 		txtValor.setColumns(10);
-		txtValor.setEditable(false);
+		
 		txtValor.setBackground(Color.WHITE);
 		txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		contentPane.add(txtValor);
 		
-		txtDias.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-			calcularValor();
-			}
-		});
+		
+		
 		
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setBounds(560, 170, 289, 2);
@@ -363,6 +368,7 @@ public class RegistroEstadia extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				calcularValor(txtDias);
 				guardarEstadias();
 			}
 		});
@@ -430,7 +436,7 @@ public class RegistroEstadia extends JFrame {
 	
 	private void guardarEstadias() {
 		if(!txtmarca.getSelectedItem().toString().equals("") && !txtModelo.equals("") && !txtDominio.equals("") && 
-				!txtTitular.equals("") && !txtTelefono.equals("") /*&&  txtLugarAsignado.equals("")*/ ) {
+				!txtTitular.equals("") && !txtTelefono.equals("") &&  !txtLugarAsignado.equals("") ) {
 			int NLugarAsignado = Integer.parseInt(txtLugarAsignado.getText());
 			int diasString = Integer.parseInt(txtDias.getText());
 			LocalDate fechaIng = LocalDate.parse(((JTextField)txtFechaEntrada.getDateEditor().getUiComponent()).getText());
@@ -444,24 +450,31 @@ public class RegistroEstadia extends JFrame {
 		}
 	}
 	
-	public void calcularValor() {
-		 
-			String dias = txtDias.getText();
+	public void calcularValor(JTextField txtDias) {
+		if(!txtDias.getText().equals("")) {
+			
+			int dias = Integer.parseInt(txtDias.getText());
 			System.out.println(dias);
-			
-			int diasI = Integer.parseInt(dias);
-			
 			
 			
 			int noche = 1500;
-			int valor= diasI*noche;
+			int valor= dias*noche;
 			
 			 
 			System.out.println(valor);
 			txtValor.setText("$"+valor);
+		}else {
 			
+			
+		
+			txtValor.setText("$"+1500);
+		}
 			
 		}
+	
+	void limpiarValor() {
+		txtValor.setText("");
+	}
 	
 
 	// Código que permite mover la ventana por la pantalla según la posición de "x"

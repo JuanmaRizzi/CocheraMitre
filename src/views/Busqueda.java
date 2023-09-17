@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import controladores.EstadiasControlador;
+import modelo.Estadias;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -13,9 +17,12 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
@@ -25,19 +32,32 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtBuscar;
-	private JTable tbHuespedes;
-	private JTable tbReservas;
-	private DefaultTableModel modelo;
-	private DefaultTableModel modeloHuesped;
+	private JTable tbEstadiasDiarias;
+	private JTable tbEstadiasMensual;
+	private DefaultTableModel modeloEstadiasMensual;
+	private DefaultTableModel modeloEstadiasDiarias;
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+	
+	
+	
+	private EstadiasControlador estadiasControl;
+			
+	private RegistroEstadia estadiasVista;
+	
+	String estadias;
 
 	/**
 	 * Launch the application.
@@ -59,6 +79,11 @@ public class Busqueda extends JFrame {
 	 * Create the frame.
 	 */
 	public Busqueda() {
+		this.estadiasVista = new RegistroEstadia();
+		this.estadiasControl = new EstadiasControlador();
+		
+		
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -88,34 +113,41 @@ public class Busqueda extends JFrame {
 		panel.setBounds(20, 169, 865, 328);
 		contentPane.add(panel);
 
-		tbReservas = new JTable();
-		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modelo = (DefaultTableModel) tbReservas.getModel();
-		modelo.addColumn("Numero de Reserva");
-		modelo.addColumn("Fecha Check In");
-		modelo.addColumn("Fecha Check Out");
-		modelo.addColumn("Valor");
-		modelo.addColumn("Forma de Pago");
-		JScrollPane scroll_table = new JScrollPane(tbReservas);
-		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table,
+		tbEstadiasMensual = new JTable();
+		tbEstadiasMensual.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tbEstadiasMensual.setFont(new Font("Roboto", Font.PLAIN, 16));
+		modeloEstadiasMensual = (DefaultTableModel) tbEstadiasMensual.getModel();
+		modeloEstadiasMensual.addColumn("Fecha Entrada");
+		modeloEstadiasMensual.addColumn("Lugar Asignado");
+		modeloEstadiasMensual.addColumn("Marca");
+		modeloEstadiasMensual.addColumn("Modelo");
+		modeloEstadiasMensual.addColumn("Dominio");
+		modeloEstadiasMensual.addColumn("Titular");
+		modeloEstadiasMensual.addColumn("Telefono");
+		modeloEstadiasMensual.addColumn("Dias");
+		modeloEstadiasMensual.addColumn("Valor");
+		JScrollPane scroll_table = new JScrollPane(tbEstadiasMensual);
+		panel.addTab("Estadias Mensuales", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table,
 				null);
 		scroll_table.setVisible(true);
 
-		tbHuespedes = new JTable();
-		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modeloHuesped = (DefaultTableModel) tbHuespedes.getModel();
-		modeloHuesped.addColumn("Marca");
-		modeloHuesped.addColumn("Modelo");
-		modeloHuesped.addColumn("Dominio");
-		modeloHuesped.addColumn("Titular");
-		modeloHuesped.addColumn("Telefono");
-		modeloHuesped.addColumn("Lugar Asignado");
-		modeloHuesped.addColumn("Fecha Entrada");
-		modeloHuesped.addColumn("Fecha Salida");
-		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
-		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")),
+		tbEstadiasDiarias = new JTable();
+		tbEstadiasDiarias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tbEstadiasDiarias.setFont(new Font("Roboto", Font.PLAIN, 16));
+		modeloEstadiasDiarias = (DefaultTableModel) tbEstadiasDiarias.getModel();
+		modeloEstadiasDiarias.addColumn("Fecha Entrada");
+		modeloEstadiasDiarias.addColumn("Lugar Asignado");
+		modeloEstadiasDiarias.addColumn("Marca");
+		modeloEstadiasDiarias.addColumn("Modelo");
+		modeloEstadiasDiarias.addColumn("Dominio");
+		modeloEstadiasDiarias.addColumn("Titular");
+		modeloEstadiasDiarias.addColumn("Telefono");
+		modeloEstadiasDiarias.addColumn("Dias");
+		modeloEstadiasDiarias.addColumn("Valor");
+		mostrarTablaEstadias();
+		
+		JScrollPane scroll_tableHuespedes = new JScrollPane(tbEstadiasDiarias);
+		panel.addTab("Estadias Diarias", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")),
 				scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 
@@ -219,7 +251,12 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				limpiarTabla();
+				if(txtBuscar.getText().equals("")) {
+					mostrarTablaEstadias();
+				}else {
+					mostrarTablaEstadiasDominio();
+				}
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -236,6 +273,19 @@ public class Busqueda extends JFrame {
 		lblBuscar.setFont(new Font("Roboto", Font.PLAIN, 18));
 
 		JPanel btnEditar = new JPanel();
+		btnEditar.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent e) {
+				
+				int filaEstadia = tbEstadiasDiarias.getSelectedRow();
+				if(filaEstadia >= 0) {
+					actualizarEstadias();
+					limpiarTabla();
+					mostrarTablaEstadias();
+				}
+			}
+			
+		});
 		btnEditar.setLayout(null);
 		btnEditar.setBackground(new Color(12, 138, 199));
 		btnEditar.setBounds(635, 508, 122, 35);
@@ -250,6 +300,23 @@ public class Busqueda extends JFrame {
 		btnEditar.add(lblEditar);
 
 		JPanel btnEliminar = new JPanel();
+		btnEliminar.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				int filaEstadias = tbEstadiasDiarias.getSelectedRow();
+				
+				if(filaEstadias >= 0) {
+					estadias = tbEstadiasDiarias.getValueAt(filaEstadias, 0).toString();
+					int confirmar = JOptionPane.showConfirmDialog(null, "Desea borrar el registro?");
+					if (confirmar == JOptionPane.YES_OPTION) {
+						String valor = tbEstadiasDiarias.getValueAt(filaEstadias, 4).toString();
+						estadiasControl.eliminar(String.valueOf(valor));
+						JOptionPane.showMessageDialog(contentPane, "Registro Eliminado con Exito");
+						limpiarTabla();
+						mostrarTablaEstadias();
+					}
+				}
+			}
+		});
 		btnEliminar.setLayout(null);
 		btnEliminar.setBackground(new Color(12, 138, 199));
 		btnEliminar.setBounds(767, 508, 122, 35);
@@ -263,6 +330,104 @@ public class Busqueda extends JFrame {
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
+	}
+	
+	private List<Estadias> mostrarEstadias(){
+		return this.estadiasControl.mostrar();
+	}
+	
+	public List<Estadias> buscarDominioEstadias(){
+		return this.estadiasControl.buscar(txtBuscar.getText());
+	}
+	
+	private void mostrarTablaEstadias() {
+		List<Estadias> estadia = mostrarEstadias();
+		modeloEstadiasMensual.setRowCount(0);
+		try {
+			for(Estadias estadias: estadia) {
+				modeloEstadiasDiarias.addRow(new Object[] {
+						estadias.getDataE(),estadias.getLugarAsignado(),estadias.getMarca(), estadias.getModelo(), estadias.getDominio(), estadias.getTitular(), estadias.getTelefono(), estadias.getDias() , estadias.getValor()
+				});
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	
+	private void mostrarTablaEstadiasDominio() {
+		List<Estadias> estadia = buscarDominioEstadias();
+		
+		try {
+			for(Estadias estadias: estadia) {
+				modeloEstadiasDiarias.addRow(new Object[] {
+						estadias.getDataE(),estadias.getLugarAsignado(),estadias.getMarca(), estadias.getModelo(), estadias.getDominio(), estadias.getTitular(), estadias.getTelefono(), estadias.getDias() , estadias.getValor()
+				});
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	
+	private void actualizarEstadias() {
+		Optional.ofNullable(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), tbEstadiasDiarias.getSelectedColumn()))
+		.ifPresentOrElse(fila ->{
+			LocalDate dataE = LocalDate.parse(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1).toString());
+			Integer lugarAsignado = Integer.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 2).toString());
+			Object marca = modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 3);
+			String modelo = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 4);
+			String dominio = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 5);
+			String titular = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 6);
+			String telefono = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 7);
+			Integer dias = Integer.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 8).toString());
+			String valor = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(),9);
+			
+			this.estadiasControl.actualizarEstadias(null, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor);
+			
+			JOptionPane.showMessageDialog(this, String.format("Registro modificado con Exito"));
+			
+			//Integer dias = 1;
+			/*
+			try {
+				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				dataE = LocalDate.parse(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1).toString(), dateFormat);
+			}catch(DateTimeException e){
+				throw new RuntimeException(e);
+			}*/
+			
+			//this.estadiasVista.limpiarValor();
+			
+			//String valor = calcularValorEstadia(dias);
+		}, ()-> JOptionPane.showMessageDialog(this, "bitte, sind sie nicht ein Tier") );
+	}
+	
+	public String calcularValorEstadia(Integer dias) {
+		if(dias!=0) {
+		 dias = Integer.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 8).toString());
+			System.out.println(dias);
+			
+			
+			int noche = 1500;	
+			int valor= dias*noche;
+			
+			 
+			System.out.println(valor);
+			return Integer.toString(valor);
+		}else {
+			
+			
+		
+			return "";
+		}
+		}
+		
+	
+	
+	private void limpiarTabla() {
+		((DefaultTableModel) tbEstadiasDiarias.getModel()).setRowCount(0);
 	}
 
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

@@ -45,6 +45,7 @@ public class ReservasView extends JFrame {
 	
 	private ReservaControlador reservaControl;
 
+
 	/**
 	 * Launch the application.
 	 */
