@@ -25,8 +25,8 @@ public class EstadiasDAO {
 	public void guardar(Estadias estadias) {
 		
 		try {
-			String sql = "INSERT INTO estadias (fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor )"
-					+"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO estadias (fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor, esMensual )"
+					+"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			try(PreparedStatement pstm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
 				pstm.setObject(1, estadias.getDataE());
 				pstm.setInt(2, estadias.getLugarAsignado());
@@ -37,6 +37,7 @@ public class EstadiasDAO {
 				pstm.setString(7, estadias.getTelefono());
 				pstm.setInt(8, estadias.getDias());
 				pstm.setString(9, estadias.getValor());
+				pstm.setBoolean(10, estadias.getEsMensual());
 				
 				pstm.execute();
 				
@@ -59,7 +60,7 @@ public class EstadiasDAO {
 		List<Estadias> estadias = new ArrayList<Estadias>();
 		try {
 			
-			String sql = "SELECT fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor FROM estadias";
+			String sql = "SELECT fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor, esMensual FROM estadias";
 			
 			try(PreparedStatement pstm = con.prepareStatement(sql)){
 				pstm.execute();
@@ -76,7 +77,7 @@ public class EstadiasDAO {
 		List<Estadias> estadias = new ArrayList<Estadias>();
 		try {
 			
-			String sql = "SELECT fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor FROM estadias WHERE dominio = ?";
+			String sql = "SELECT fecha_entrada, lugar_asignado, marca, modelo, dominio, titular, telefono,dias, valor, esMensual FROM estadias WHERE dominio = ?";
 			
 			try(PreparedStatement pstm = con.prepareStatement(sql)){
 				pstm.setString(1, dominio);
@@ -91,9 +92,9 @@ public class EstadiasDAO {
 	}
 	
 	public void actualizar(LocalDate dataE, Integer lugarAsignado, Object marca, String modelo, String dominio,
-			String titular, String telefono, Integer dias, String valor) {
+			String titular, String telefono, Integer dias, String valor, Boolean esMensual) {
 		try(PreparedStatement pstm = con.prepareStatement("UPDATE estadias SET "
-				+ "fecha_entrada=?, lugar_asignado=?, marca=?, modelo=?, dominio=?, titular=?, telefono=?, dias=?, valor=? WHERE dominio = ?")) {
+				+ "fecha_entrada=?, lugar_asignado=?, marca=?, modelo=?, dominio=?, titular=?, telefono=?, dias=?, valor=? , esMensual=? WHERE dominio = ?")) {
 			
 			pstm.setObject(1,dataE);
 			pstm.setInt(2,lugarAsignado);
@@ -104,13 +105,16 @@ public class EstadiasDAO {
 			pstm.setString(7, telefono);
 			pstm.setInt(8, dias);
 			pstm.setString(9, valor);
-			
+			pstm.setBoolean(10, esMensual);
+			pstm.setString(11, dominio);
 			pstm.execute();
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
 	
 	public void eliminar(String dominio) {
 		try (PreparedStatement stm = con.prepareStatement("DELETE FROM estadias WHERE dominio = ?")){
@@ -135,8 +139,9 @@ public class EstadiasDAO {
 				String  telefono = rst.getString("telefono");
 				Integer dias = rst.getInt("dias");
 				String  valor = rst.getString("valor");
+				Boolean esMensual = rst.getBoolean("esMensual");
 				
-				Estadias producto = new Estadias(fechaE, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor);
+				Estadias producto = new Estadias(fechaE, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor, esMensual);
 				estadias.add(producto);
 				
 			}

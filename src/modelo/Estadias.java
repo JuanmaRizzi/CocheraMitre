@@ -15,13 +15,13 @@ public class Estadias {
 		private String telefono;
 		private Integer dias;
 		private String valor;
-		
+		private Boolean esMensual;
 		
 	
 
 
 		public Estadias( LocalDate dataE, Integer lugarAsignado, Object marca, String modelo, String dominio,
-				String titular, String telefono, Integer dias, String valor) {
+				String titular, String telefono, Integer dias, String valor, Boolean esMensual) {
 		
 			
 			this.dataE = dataE;
@@ -33,6 +33,17 @@ public class Estadias {
 			this.telefono = telefono;
 			this.dias = dias;
 			this.valor = valor;
+			this.esMensual = (dias >= 30);
+		}
+
+
+		public Boolean getEsMensual() {
+			return esMensual;
+		}
+
+
+		public void setEsMensual(Boolean esMensual) {
+			this.esMensual = esMensual;
 		}
 
 

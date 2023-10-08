@@ -440,7 +440,7 @@ public class RegistroEstadia extends JFrame {
 			int NLugarAsignado = Integer.parseInt(txtLugarAsignado.getText());
 			int diasString = Integer.parseInt(txtDias.getText());
 			LocalDate fechaIng = LocalDate.parse(((JTextField)txtFechaEntrada.getDateEditor().getUiComponent()).getText());
-			Estadias estadias = new Estadias(fechaIng, NLugarAsignado,  txtmarca.getSelectedItem().toString(), txtModelo.getText(), txtDominio.getText(), txtTitular.getText(),txtTelefono.getText(), diasString, txtValor.getText());
+			Estadias estadias = new Estadias(fechaIng, NLugarAsignado,  txtmarca.getSelectedItem().toString(), txtModelo.getText(), txtDominio.getText(), txtTitular.getText(),txtTelefono.getText(), diasString, txtValor.getText(), null);
 			this.estadiasControl.guardar(estadias);
 			Exito exito = new Exito();
 			exito.setVisible(true);
@@ -472,7 +472,7 @@ public class RegistroEstadia extends JFrame {
 			
 		}
 	
-	void limpiarValor() {
+	public void limpiarValor() {
 		txtValor.setText("");
 	}
 	

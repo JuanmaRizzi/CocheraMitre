@@ -30,8 +30,8 @@ public class EstadiasControlador {
 	}
 
 	public void actualizarEstadias(LocalDate dataE, Integer lugarAsignado, Object marca, String modelo, String dominio,
-			String titular, String telefono, Integer dias, String valor) {
-		this.estadiasDao.actualizar(dataE, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor);
+			String titular, String telefono, Integer dias, String valor, Boolean esMensual) {
+		this.estadiasDao.actualizar(dataE, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor, esMensual);
 	}
 
 	
