@@ -1,50 +1,45 @@
 package views;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Panel;
 import java.awt.Color;
-import java.awt.SystemColor;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Panel;
+import java.awt.SystemColor;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("serial")
 public class MenuPrincipal extends JFrame {
-
+	private static final Logger logger = Logger.getLogger(MenuPrincipal.class);
 	private JPanel contentPane;
 	private JLabel labelExit;
-	int xMouse, yMouse;
+	private int xMouse;
+	private int yMouse;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuPrincipal frame = new MenuPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				MenuPrincipal frame = new MenuPrincipal();
+				frame.setVisible(true);
+			} catch(Exception e) {
+				logger.error(e.getMessage(), e);
 			}
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MenuPrincipal() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MenuPrincipal.class.getResource("/imagenes/aH-40px.png")));
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 910, 537);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,35 +48,29 @@ public class MenuPrincipal extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
-
 		Panel panel = new Panel();
 		panel.setBackground(SystemColor.window);
 		panel.setBounds(0, 0, 910, 537);
 		contentPane.add(panel);
 		panel.setLayout(null);
-
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(-10, 0, 732, 501);
 		imagenFondo.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/menu-img.png")));
 		panel.add(imagenFondo);
-
 		JLabel logo = new JLabel("");
 		logo.setBounds(722, 80, 150, 156);
 		logo.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/aH-150px.png")));
 		panel.add(logo);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 500, 910, 37);
-		panel_1.setBackground(new Color(12, 138, 199));
-		panel.add(panel_1);
-		panel_1.setLayout(null);
-
+		JPanel panel1 = new JPanel();
+		panel1.setBounds(0, 500, 910, 37);
+		panel1.setBackground(new Color(12, 138, 199));
+		panel.add(panel1);
+		panel1.setLayout(null);
 		JLabel lblCopyR = new JLabel("Desarrollado por Fulanita de Tal © 2023");
 		lblCopyR.setBounds(315, 11, 284, 19);
 		lblCopyR.setForeground(new Color(240, 248, 255));
 		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 16));
-		panel_1.add(lblCopyR);
-
+		panel1.add(lblCopyR);
 		// Barra para controlar la ventana
 		JPanel header = new JPanel();
 		header.setBounds(0, 0, 910, 36);
@@ -89,7 +78,6 @@ public class MenuPrincipal extends JFrame {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				headerMouseDragged(e);
-
 			}
 		});
 		header.addMouseListener(new MouseAdapter() {
@@ -101,7 +89,6 @@ public class MenuPrincipal extends JFrame {
 		header.setLayout(null);
 		header.setBackground(Color.WHITE);
 		panel.add(header);
-
 		// Botón salir
 		JPanel btnexit = new JPanel();
 		btnexit.addMouseListener(new MouseAdapter() {
@@ -127,13 +114,11 @@ public class MenuPrincipal extends JFrame {
 		btnexit.setBackground(Color.WHITE);
 		btnexit.setBounds(857, 0, 53, 36);
 		header.add(btnexit);
-
 		labelExit = new JLabel("X");
 		labelExit.setBounds(0, 0, 53, 36);
 		btnexit.add(labelExit);
 		labelExit.setHorizontalAlignment(SwingConstants.CENTER);
 		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
-
 		// Botón Login
 		JPanel btnLogin = new JPanel();
 		btnLogin.setBounds(754, 300, 83, 70);
@@ -149,13 +134,11 @@ public class MenuPrincipal extends JFrame {
 		btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		btnLogin.setBackground(SystemColor.window);
 		panel.add(btnLogin);
-
 		JLabel imagenLogin = new JLabel("");
 		imagenLogin.setBounds(0, 0, 80, 70);
 		btnLogin.add(imagenLogin);
 		imagenLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		imagenLogin.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/login.png")));
-
 		JLabel lblTitulo = new JLabel("LOGIN");
 		lblTitulo.setBounds(754, 265, 83, 24);
 		lblTitulo.setBackground(SystemColor.window);
@@ -165,8 +148,7 @@ public class MenuPrincipal extends JFrame {
 		lblTitulo.setFont(new Font("Roboto Light", Font.PLAIN, 20));
 	}
 
-	// Código que permite movimentar a janela pela tela seguindo a posição de "x" e
-	// "y"
+	// Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {
 		xMouse = evt.getX();
 		yMouse = evt.getY();
