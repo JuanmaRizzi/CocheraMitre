@@ -7,10 +7,10 @@ import model.Usuario;
 import views.Login;
 import views.MenuUsuario;
 
-public class UsuariosController implements ActionListener {
+public class UsuarioController implements ActionListener {
 	private Login vista;
 
-	public UsuariosController(Login vista) {
+	public UsuarioController(Login vista) {
 		this.vista = vista;
 	}
 

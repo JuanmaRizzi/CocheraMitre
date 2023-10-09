@@ -13,6 +13,7 @@ public class Estadia {
 	private String telefono;
 	private Integer dias;
 	private String valor;
+	private String mensual;
 
 	public Integer getId() {
 		return id;
@@ -92,5 +93,13 @@ public class Estadia {
 
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	public String getMensual() {
+		return mensual;
+	}
+
+	public void setMensual(String mensual) {
+		this.mensual = mensual;
 	}
 }

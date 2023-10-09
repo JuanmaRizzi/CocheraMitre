@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import org.apache.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
-import controller.EstadiasController;
+import controller.EstadiaController;
 import model.Estadia;
 
 @SuppressWarnings("serial")
@@ -45,7 +45,7 @@ public class RegistroEstadia extends JFrame {
 	private JLabel labelAtras;
 	private int xMouse;
 	private int yMouse;
-	private transient EstadiasController estadiasController;
+	private transient EstadiaController estadiasController;
 	private static final String ROBOTO = "Roboto";
 	private static final String ROBOTO_BLACK = "Roboto Black";
 	private static final String ERROR_GUARDAR_ESTADIA = "HA OCURRIDO UN ERROR AL INTENTAR GUARDAR LA ESTADÍA: ";
@@ -62,7 +62,7 @@ public class RegistroEstadia extends JFrame {
 	}
 
 	public RegistroEstadia() {
-		this.estadiasController = new EstadiasController();
+		this.estadiasController = new EstadiaController();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroEstadia.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
@@ -374,7 +374,9 @@ public class RegistroEstadia extends JFrame {
 				estadia.setTelefono(txtTelefono.getText());
 				estadia.setTitular(txtTitular.getText());
 				estadia.setValor(txtValor.getText());
-				this.estadiasController.guardar(estadia);
+				// TODO - VER CÓMO AGREGAR SI ES MENSUAL O NO...
+				estadia.setEsMensual(false);
+				this.estadiasController.guardarEstadia(estadia);
 				Exito exito = new Exito();
 				exito.setVisible(true);
 				dispose();

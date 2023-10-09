@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import org.apache.log4j.Logger;
-import controller.UsuariosController;
+import controller.UsuarioController;
 
 public class Login extends JFrame {
 	private static final Logger logger = Logger.getLogger(Login.class);
@@ -164,7 +164,7 @@ public class Login extends JFrame {
 		lblContrasenia.setBounds(65, 316, 140, 26);
 		panel.add(lblContrasenia);
 		JButton btnLogin = new JButton();
-		btnLogin.addActionListener(new UsuariosController(this));
+		btnLogin.addActionListener(new UsuarioController(this));
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {

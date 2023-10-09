@@ -13,7 +13,14 @@ public class ConexionBase {
 		ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
 		comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost/Cocheras_Mitre_999_Diario?useTimeZone=true&TimeZone=UTC");
 		comboPooledDataSource.setUser("root");
-		comboPooledDataSource.setPassword("HueneiSQL123#");
+		/*
+		 * TODO
+		 */
+		// comboPooledDataSource.setPassword("HueneiSQL123#");
+		comboPooledDataSource.setPassword("root");
+		/*
+		 * TODO
+		 */
 		this.dataSource = comboPooledDataSource;
 	}
 
