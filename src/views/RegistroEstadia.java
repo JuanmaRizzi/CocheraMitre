@@ -10,7 +10,7 @@ import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
 
 import controladores.EstadiasControlador;
-import controladores.ReservaControlador;
+
 import modelo.Estadias;
 
 import javax.swing.JComboBox;
@@ -119,8 +119,10 @@ public class RegistroEstadia extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReservasView reservas = new ReservasView();
-				reservas.setVisible(true);
+				MenuUsuario menuUsuario = new MenuUsuario();
+				menuUsuario.setVisible(true);
+				/*ReservasView reservas = new ReservasView();
+				reservas.setVisible(true);*/
 				dispose();
 			}
 
@@ -150,8 +152,8 @@ public class RegistroEstadia extends JFrame {
 		
 		txtFechaEntrada = new JDateChooser();
 		txtFechaEntrada.getCalendarButton().setBackground(SystemColor.textHighlight);
-		txtFechaEntrada.getCalendarButton()
-				.setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/icon-reservas.png")));
+		/*txtFechaEntrada.getCalendarButton()
+				.setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/icon-reservas.png")));*/
 		txtFechaEntrada.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
 		txtFechaEntrada.setBounds(560, 75, 289, 36);
 		txtFechaEntrada.getCalendarButton().setBounds(560, 300, 289, 36);
