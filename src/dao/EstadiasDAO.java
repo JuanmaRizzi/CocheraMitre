@@ -94,7 +94,7 @@ public class EstadiasDAO {
 	public void actualizar(LocalDate dataE, Integer lugarAsignado, Object marca, String modelo, String dominio,
 			String titular, String telefono, Integer dias, String valor, Boolean esMensual) {
 		try(PreparedStatement pstm = con.prepareStatement("UPDATE estadias SET "
-				+ "fecha_entrada=?, lugar_asignado=?, marca=?, modelo=?, dominio=?, titular=?, telefono=?, dias=?, valor=? , esMensual=? WHERE dominio = ?")) {
+				+ "fecha_entrada=?, lugar_asignado=?, marca=?, modelo=?, dominio=?, titular=?, telefono=?, dias=?, valor=?, esMensual=? WHERE dominio = ?")) {
 			
 			pstm.setObject(1,dataE);
 			pstm.setInt(2,lugarAsignado);
@@ -128,7 +128,7 @@ public class EstadiasDAO {
 	
 	private void transformarResultado(List<Estadias> estadias, PreparedStatement pstm) throws SQLException {
 		
-		try(ResultSet rst = pstm.getResultSet()){  //pstm.executeQuery()
+		try(ResultSet rst = pstm.getResultSet()){  //pstm.executeQuery() pstm.getResultSet()
 			while(rst.next()) {
 				LocalDate fechaE = rst.getDate("fecha_entrada").toLocalDate();
 				Integer lugarAsignado = rst.getInt("lugar_asignado");

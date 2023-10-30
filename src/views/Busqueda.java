@@ -113,24 +113,7 @@ public class Busqueda extends JFrame {
 		panel.setBounds(20, 169, 865, 328);
 		contentPane.add(panel);
 
-		tbEstadiasMensual = new JTable();
-		tbEstadiasMensual.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbEstadiasMensual.setFont(new Font("Roboto", Font.PLAIN, 16));
-		modeloEstadiasMensual = (DefaultTableModel) tbEstadiasMensual.getModel();
-		modeloEstadiasMensual.addColumn("Fecha Entrada");
-		modeloEstadiasMensual.addColumn("Lugar Asignado");
-		modeloEstadiasMensual.addColumn("Marca");
-		modeloEstadiasMensual.addColumn("Modelo");
-		modeloEstadiasMensual.addColumn("Dominio");
-		modeloEstadiasMensual.addColumn("Titular");
-		modeloEstadiasMensual.addColumn("Telefono");
-		modeloEstadiasMensual.addColumn("Dias");
-		modeloEstadiasMensual.addColumn("Valor");
-		tbEstadiasMensual.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		JScrollPane scroll_table = new JScrollPane(tbEstadiasMensual);
-		panel.addTab("Estadias Mensuales", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table,
-				null);
-		scroll_table.setVisible(true);
+		
 
 		tbEstadiasDiarias = new JTable();
 		tbEstadiasDiarias.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -153,6 +136,30 @@ public class Busqueda extends JFrame {
 		panel.addTab("Estadias Diarias", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")),
 				scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
+		
+		tbEstadiasMensual = new JTable();
+		tbEstadiasMensual.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tbEstadiasMensual.setFont(new Font("Roboto", Font.PLAIN, 16));
+		modeloEstadiasMensual = (DefaultTableModel) tbEstadiasMensual.getModel();
+		
+		modeloEstadiasMensual.addColumn("Fecha Entrada");
+		modeloEstadiasMensual.addColumn("Lugar Asignado");
+		modeloEstadiasMensual.addColumn("Marca");
+		modeloEstadiasMensual.addColumn("Modelo");
+		modeloEstadiasMensual.addColumn("Dominio");
+		modeloEstadiasMensual.addColumn("Titular");
+		modeloEstadiasMensual.addColumn("Telefono");
+		modeloEstadiasMensual.addColumn("Dias");
+		modeloEstadiasMensual.addColumn("Valor");
+		tbEstadiasMensual.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		
+		JScrollPane scroll_table = new JScrollPane(tbEstadiasMensual);
+		panel.addTab("Estadias Mensuales", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table,
+				null);
+		scroll_table.setVisible(true);
+		
+		
+		mostrarTablaEstadiasMensual();
 
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
@@ -257,8 +264,10 @@ public class Busqueda extends JFrame {
 				limpiarTabla();
 				if(txtBuscar.getText().equals("")) {
 					mostrarTablaEstadias();
+					mostrarTablaEstadiasMensual();
 				}else {
 					mostrarTablaEstadiasDominio();
+					
 				}
 			}
 		});
@@ -369,7 +378,7 @@ public class Busqueda extends JFrame {
 	
 	private void mostrarTablaEstadias() {
 		List<Estadias> estadia = mostrarEstadias();
-		modeloEstadiasMensual.setRowCount(0);
+		//modeloEstadiasMensual.setRowCount(0);
 		modeloEstadiasDiarias.setRowCount(0);
 		try {
 			for(Estadias estadias: estadia) {
@@ -378,11 +387,30 @@ public class Busqueda extends JFrame {
 							estadias.getDataE(),estadias.getLugarAsignado(),estadias.getMarca(), estadias.getModelo(), estadias.getDominio(), estadias.getTitular(), estadias.getTelefono(), estadias.getDias() , estadias.getValor(), estadias.getEsMensual()
 					});
 				} else {
+					//modeloEstadiasMensual.addRow(new Object[] {
+						//	estadias.getDataE(),estadias.getLugarAsignado(),estadias.getMarca(), estadias.getModelo(), estadias.getDominio(), estadias.getTitular(), estadias.getTelefono(), estadias.getDias() , estadias.getValor(), estadias.getEsMensual()
+//					});
+
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	private void mostrarTablaEstadiasMensual() {
+		List<Estadias> estadia = mostrarEstadias();
+		
+		modeloEstadiasMensual.setRowCount(0);
+		try {
+			for(Estadias estadias: estadia) {
+				if (Boolean.TRUE.equals(estadias.getEsMensual())) {
 					modeloEstadiasMensual.addRow(new Object[] {
 							estadias.getDataE(),estadias.getLugarAsignado(),estadias.getMarca(), estadias.getModelo(), estadias.getDominio(), estadias.getTitular(), estadias.getTelefono(), estadias.getDias() , estadias.getValor(), estadias.getEsMensual()
 					});
-
-				}
+				} 
 				
 			}
 			
@@ -395,7 +423,7 @@ public class Busqueda extends JFrame {
 	private void mostrarTablaEstadiasDominio() {
 		List<Estadias> estadia = buscarDominioEstadias();
 		
-		modeloEstadiasMensual.setRowCount(0);
+		
 		modeloEstadiasDiarias.setRowCount(0);
 		
 		try {
@@ -432,11 +460,6 @@ public class Busqueda extends JFrame {
 				throw new RuntimeException(e);
 			}
 			
-			//this.estadiasVista.limpiarValor();
-			
-			
-			
-			//Date dataE = Date.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1).toString());
 			Integer lugarAsignado = Integer.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1).toString());
 			String marca = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 2);
 			String modelo = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 3);
@@ -470,11 +493,7 @@ public class Busqueda extends JFrame {
 				throw new RuntimeException(e);
 			}
 			
-			//this.estadiasVista.limpiarValor();
 			
-			
-			
-			//Date dataE = Date.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1).toString());
 			Integer lugarAsignado = Integer.valueOf(modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 1).toString());
 			String marca = (String) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 2);
 			String modelo = (String) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 3);
@@ -482,9 +501,9 @@ public class Busqueda extends JFrame {
 			String titular = (String) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 5);
 			String telefono = (String) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 6);
 			 dias = Integer.valueOf(modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(), 7).toString());
-			 String valor = "S/" + calcularValorEstadia(dias);
+			 String valor = "S/" + calcularValorEstadiaMensual(dias);
 			 valor = (String) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(),8);
-			 boolean esMensual = (boolean) modeloEstadiasMensual.getValueAt(tbEstadiasMensual.getSelectedRow(),9);
+			boolean esMensual =(dias >= 30); 
 			
 			this.estadiasControl.actualizarEstadias(dataE, lugarAsignado, marca, modelo, dominio, titular, telefono, dias, valor, esMensual);
 			
@@ -495,27 +514,7 @@ public class Busqueda extends JFrame {
 	}
 	
 	
-	//chino con arreglos
-	/*private void actualizarEstadias() {
-		Estadias estadia = new Estadias();
-		estadia.setDias(Integer.valueOf(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 7))));
-		estadia.setDominio(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 4)));
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		estadia.setDataE(LocalDate.parse(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 0).toString(), dateTimeFormatter));
-		estadia.setLugarAsignado(Integer.valueOf(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 1))));
-		String marca = (String) modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 2);
-		estadia.setMarca(String.valueOf(marca));
-		estadia.setModelo(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 3)));
-		estadia.setTelefono(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 6)));
-		estadia.setTitular(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 5)));
-		estadia.setValor(String.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 8)));
-		try {
-			this.estadiasController.actualizarEstadias(estadia);
-			JOptionPane.showMessageDialog(this, "Registro modificado con Exito");
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(this, ERROR_ACTUALIZAR_ESTADIA + e.getMessage(), ERROR, JOptionPane.ERROR_MESSAGE);
-		}
-	}*/
+	
 	
 	public String calcularValorEstadia(Integer dias) {
 		if(dias!=0) {
@@ -525,6 +524,27 @@ public class Busqueda extends JFrame {
 			
 			int noche = 1500;	
 			int valor= dias*noche;
+			
+			 
+			System.out.println(valor);
+			return Integer.toString(valor);
+		}else {
+			
+			
+		
+			return "";
+		}
+		}
+	
+	public String calcularValorEstadiaMensual(Integer dias) {
+		if(dias!=0) {
+		 //dias = Integer.valueOf(modeloEstadiasDiarias.getValueAt(tbEstadiasDiarias.getSelectedRow(), 7).toString());
+		//	System.out.println(dias);
+			
+			
+			//int noche = 1500;	
+			//int valor= dias*noche;
+			int valor= 30000;
 			
 			 
 			System.out.println(valor);
